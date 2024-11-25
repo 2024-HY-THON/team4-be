@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'adopt'
+
+      - name: Make application.yml
+        env:
+          TEST_PROPERTIES: ${{ secrets.TEST_PROPERTIES }}
+        run: |
+          mkdir -p src/main/resources
+          echo "$TEST_PROPERTIES" > src/main/resources/application.yml
+
+      - name: Run tests
+        run: |
+          ./gradlew clean test
