@@ -23,6 +23,7 @@ public enum BaseResponseStatus {
     _INVALID_JWT(false, HttpStatus.BAD_REQUEST.value(), "유효하지 않은 토큰입니다."),
     _UNSUPPORTED_JWT(false, HttpStatus.BAD_REQUEST.value(), "지원되지 않는 토큰입니다."),
     _EMPTY_JWT(false, HttpStatus.BAD_REQUEST.value(), "토큰이 비어있습니다."),
+    TOKEN_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "토큰이 존재하지 않습니다."),
 
 
 

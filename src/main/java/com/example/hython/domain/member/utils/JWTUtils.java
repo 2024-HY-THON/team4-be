@@ -2,6 +2,7 @@ package com.example.hython.domain.member.utils;
 
 import com.example.hython.common.exception.BaseException;
 import com.example.hython.common.response.BaseResponseStatus;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -9,6 +10,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,6 +20,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Slf4j
 @Component
@@ -42,6 +46,29 @@ public class JWTUtils {
                 .setExpiration(new Date(date.getTime() + EXPIRATION_TIME)) // 만료 시간
                 .signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()), SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    public Long getMemberIdByToken(String token) {
+        Claims claims = getClaims(token);
+        return claims.get("memberId", Long.class);
+    }
+
+    public String getToken() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+                .getRequest();
+
+        String token = request.getHeader("Authorization");
+
+        if (token == null) {
+            throw new BaseException(BaseResponseStatus.TOKEN_NOT_EXIST);
+        }
+
+        // "Bearer "가 포함되어 있는 경우 제거
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7); // "Bearer " 이후의 토큰 부분만 반환
+        }
+
+        return token;
     }
 
     // 토큰 유효성 검사 -> 유효기간 만료 여부 확인
@@ -70,5 +97,13 @@ public class JWTUtils {
         } catch (IllegalArgumentException e) {
             throw new BaseException(BaseResponseStatus._EMPTY_JWT);
         }
+    }
+
+    private Claims getClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()))
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 }
