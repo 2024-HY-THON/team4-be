@@ -20,7 +20,7 @@ public class ReposeController {
             내 휴식 조회 API입니다. 내 휴식을 조회합니다.\n
             현재 진행 중인 휴식만 조회됩니다. 휴식이 완료된 경우는 조회되지 않습니다. 
             """)
-    @GetMapping("/get-my-repose")
+    @GetMapping("/get-my-rest")
     public BaseResponse<?> getMyRepose() {
         return new BaseResponse(reposeService.getMyRepose());
     }
@@ -63,10 +63,10 @@ public class ReposeController {
             현재 빠른 연동을 위해 휴식이 완료되지 않아도 오늘의 결과를 기록할 수 있습니다. 오늘의 결과를 기록하게 되면 해당 휴식은 완료된 것으로 간주됩니다.\n
             이후 휴식 결과를 조회할 때 완료된 휴식만 조회됩니다. 따라서 해당 휴식은 조회되지 않습니다.
             """)
-    @PostMapping("/today-repose/{reposeId}")
+    @PostMapping("/today-rest/{restId}")
     public BaseResponse<?> todayRepose(@RequestBody ReposeRequestDTO.ReposeTodayRequestDTO requestDTO,
-                                       @PathVariable Long reposeId) {
-        return new BaseResponse(reposeService.updateTodayRepose(reposeId, requestDTO));
+                                       @PathVariable Long restId) {
+        return new BaseResponse(reposeService.updateTodayRepose(restId, requestDTO));
     }
 
     // 6. 캘린더 조회
