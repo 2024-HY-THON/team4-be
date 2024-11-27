@@ -86,38 +86,4 @@ public class MemberService {
                 .build();
     }
 
-    @Transactional
-    public boolean addRecipe(MemberRequestDTO.RecipeRequestDTO requestDto) {
-        String token = jwtUtils.getToken();
-        Long memberId = jwtUtils.getMemberIdByToken(token);
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new BaseException(BaseResponseStatus.NOT_FOUND_MEMBER));
-
-        member.addRecipe(requestDto.getRecipe());
-        return true;
-    }
-
-    @Transactional
-    public boolean deleteRecipe(MemberRequestDTO.RecipeRequestDTO requestDto) {
-        String token = jwtUtils.getToken();
-        Long memberId = jwtUtils.getMemberIdByToken(token);
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new BaseException(BaseResponseStatus.NOT_FOUND_MEMBER));
-
-        member.removeRecipe(requestDto.getRecipe());
-        return true;
-    }
-
-    @Transactional
-    public List<String> getMyRecipe() {
-        String token = jwtUtils.getToken();
-        Long memberId = jwtUtils.getMemberIdByToken(token);
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new BaseException(BaseResponseStatus.NOT_FOUND_MEMBER));
-
-        return member.getRecipes();
-    }
 }

@@ -54,29 +54,7 @@ public class MemberController {
     }
 
 
-    @Tag(name = "회원 - 레시피")
-    @Operation(summary = "내 레시피 조회", description = "내 레시피 조회 API입니다. 내 레시피를 조회합니다.")
-    @GetMapping("/get-my-recipe")
-    public BaseResponse<?> getMyRecipe () {
-        return new BaseResponse<>(memberService.getMyRecipe());
-    }
 
-
-    // 새로운 레시피 추가하기
-    @Tag(name = "회원 - 레시피")
-    @Operation(summary = "레시피 추가", description = "레시피 추가 API입니다. 레시피를 입력받아 레시피를 추가합니다.")
-    @PostMapping("/add-recipe")
-    public BaseResponse<?> addRecipe (@RequestBody MemberRequestDTO.RecipeRequestDTO requestDto) {
-        return new BaseResponse<>(memberService.addRecipe(requestDto));
-    }
-
-    // 레시피 삭제하기
-    @Tag(name = "회원 - 레시피")
-    @Operation(summary = "레시피 삭제", description = "레시피 삭제 API입니다. 레시피를 입력받아 레시피를 삭제합니다.")
-    @PostMapping("/delete-recipe")
-    public BaseResponse<?> deleteRecipe (@RequestBody MemberRequestDTO.RecipeRequestDTO requestDto) {
-        return new BaseResponse<>(memberService.deleteRecipe(requestDto));
-    }
 
 
 }
