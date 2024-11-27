@@ -28,4 +28,10 @@ public class MemberRequestDTO {
         private String name;
         private String phoneNumber;
     }
+
+    @Getter
+    @RequiredArgsConstructor
+    public static class RecipeRequestDTO {
+        private String recipe;
+    }
 }
