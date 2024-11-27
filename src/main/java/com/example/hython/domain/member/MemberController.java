@@ -22,9 +22,27 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @Operation(summary = "회원가입", description = "회원가입 API")
+    @Operation(summary = "회원가입", description = "회원 가입 API입니다. 이메일, 비밀번호, 이름을 입력받아 회원가입을 진행합니다.")
     @PostMapping("/sign-up")
     public BaseResponse<MemberResponseDTO.MemberSignUpResponseDTO> signup (@RequestBody MemberRequestDTO.MemberSignUpRequestDTO requestDto) {
         return new BaseResponse<>(memberService.signup(requestDto));
     }
+
+    @Operation(summary = "로그인", description = "로그인 API입니다. 이메일, 비밀번호를 입력받아 로그인을 진행합니다.")
+    @PostMapping("/sign-in")
+    public BaseResponse<MemberResponseDTO.MemberSignUpResponseDTO> signin (@RequestBody MemberRequestDTO.MemberSignInRequestDTO requestDto) {
+        return new BaseResponse<>(memberService.signin(requestDto));
+    }
+
+    // 개인 정보 변경하기 (이메일, 비밀번호, 이름)
+    @Operation(summary = "개인 정보 변경", description = "개인 정보 변경 API입니다. 비밀번호, 이름, 전화번호를 입력받아 개인 정보를 변경합니다.")
+    @PostMapping("/update-info")
+    public BaseResponse<?> updateInfo (@RequestBody MemberRequestDTO.MemberUpdateRequestDTO requestDto) {
+        return new BaseResponse<>(memberService.updateInfo(requestDto));
+    }
+
+    // 내 레시피 조회하기
+
+    // 새로운 레시피 추가하기
+
 }

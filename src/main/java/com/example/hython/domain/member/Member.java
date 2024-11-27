@@ -35,4 +35,12 @@ public class Member {
     @Column(nullable = false)
     private String name;
 
+    private String phoneNumber;
+
+
+    public void updateInfo(String password, String name, String phoneNumber) {
+        this.password = password;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+    }
 }

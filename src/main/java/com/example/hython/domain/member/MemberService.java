@@ -38,4 +38,35 @@ public class MemberService {
                 .accessToken(jwtUtils.generateToken(member.getId()))
                 .build();
     }
+
+    @Transactional
+    public MemberResponseDTO.MemberSignUpResponseDTO signin(MemberRequestDTO.MemberSignInRequestDTO requestDto) {
+        Member member = memberRepository.findByEmail(requestDto.getEmail())
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.NOT_FOUND_MEMBER));
+
+        if (!member.getPassword().equals(requestDto.getPassword())) {
+            throw new BaseException(BaseResponseStatus.INVALID_PASSWORD);
+        }
+
+        return MemberResponseDTO.MemberSignUpResponseDTO.builder()
+                .email(member.getEmail())
+                .accessToken(jwtUtils.generateToken(member.getId()))
+                .build();
+    }
+
+    @Transactional
+    public MemberResponseDTO.MemberSignUpResponseDTO updateInfo(MemberRequestDTO.MemberUpdateRequestDTO requestDto) {
+        String token = jwtUtils.getToken();
+        Long memberId = jwtUtils.getMemberIdByToken(token);
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.NOT_FOUND_MEMBER));
+
+        member.updateInfo(requestDto.getPassword(), requestDto.getName(), requestDto.getPhoneNumber());
+
+        return MemberResponseDTO.MemberSignUpResponseDTO.builder()
+                .email(member.getEmail())
+                .accessToken(jwtUtils.generateToken(member.getId()))
+                .build();
+    }
 }

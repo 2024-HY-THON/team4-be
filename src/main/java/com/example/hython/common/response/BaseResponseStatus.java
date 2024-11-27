@@ -24,6 +24,8 @@ public enum BaseResponseStatus {
     _UNSUPPORTED_JWT(false, HttpStatus.BAD_REQUEST.value(), "지원되지 않는 토큰입니다."),
     _EMPTY_JWT(false, HttpStatus.BAD_REQUEST.value(), "토큰이 비어있습니다."),
     TOKEN_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "토큰이 존재하지 않습니다."),
+    NOT_FOUND_MEMBER(false, HttpStatus.BAD_REQUEST.value(), "존재하지 않는 회원입니다."),
+    INVALID_PASSWORD(false, HttpStatus.BAD_REQUEST.value(), "비밀번호가 일치하지 않습니다."),
 
 
 
