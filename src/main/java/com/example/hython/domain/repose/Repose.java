@@ -2,6 +2,7 @@ package com.example.hython.domain.repose;
 
 
 import com.example.hython.domain.member.Member;
+import com.example.hython.domain.repose.dtos.ReposeRequestDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -56,6 +57,10 @@ public class Repose {
     // 타이머가 일시 정지 상태인지 여부
     private Boolean isPaused; // 추가된 필드
 
+    private String todayDefinition; // 추가된 필드
+
+    private String todayEmotion; // 추가된 필드
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -68,6 +73,13 @@ public class Repose {
 
     public void resume() {
         this.isPaused = false;
+    }
+
+    public void updateTodayRepose(ReposeRequestDTO.ReposeTodayRequestDTO requestDTO) {
+        this.isDone = true;
+        this.remainingSeconds = 0;
+        this.todayDefinition = requestDTO.getTodayDefinition();
+        this.todayEmotion = requestDTO.getTodayEmotion();
     }
 }
 

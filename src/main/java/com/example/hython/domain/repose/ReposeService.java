@@ -133,6 +133,21 @@ public class ReposeService {
         reposeRepository.save(repose);
     }
 
+    public ReposeResponseDTO.ReposeDetailDTO updateTodayRepose(Long reposeId, ReposeRequestDTO.ReposeTodayRequestDTO reposeRequest) {
+        Repose repose = reposeRepository.findById(reposeId).orElseThrow(
+                () -> new BaseException(BaseResponseStatus.NOT_FOUND_REPOSE)
+        );
+
+        repose.updateTodayRepose(reposeRequest);
+        Repose saved = reposeRepository.save(repose);
+
+        return ReposeResponseDTO.ReposeDetailDTO.builder()
+                .reposeId(saved.getId())
+                .todayDefinition(saved.getTodayDefinition())
+                .todayEmotion(saved.getTodayEmotion())
+                .build();
+    }
+
     public void calendar() {
 
     }

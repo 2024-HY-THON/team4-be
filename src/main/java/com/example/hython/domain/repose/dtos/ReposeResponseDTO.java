@@ -29,4 +29,14 @@ public class ReposeResponseDTO {
         private Integer reposeCount;
     }
 
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ReposeDetailDTO {
+        private Long reposeId;
+        private String todayDefinition;
+        private String todayEmotion;
+    }
+
 }

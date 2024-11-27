@@ -14,6 +14,10 @@ public class ReposeController {
     private final ReposeService reposeService; // ReposeService 주입
 
     // 1. 내 Repose 조회
+    @Operation(summary = "내 휴식 조회", description = """
+            내 휴식 조회 API입니다. 내 휴식을 조회합니다.\n
+            현재 진행 중인 휴식만 조회됩니다. 휴식이 완료된 경우는 조회되지 않습니다. 
+            """)
     @GetMapping("/get-my-repose")
     public BaseResponse<?> getMyRepose() {
         return new BaseResponse(reposeService.getMyRepose());
@@ -50,14 +54,19 @@ public class ReposeController {
         return new BaseResponse(reposeService.resumeRepose(restId));
     }
 
-//    // 5. 오늘 하루의 결과 기록
-//    @PostMapping("/today-repose/{reposeId}")
-//    public BaseResponse<?> todayRepose(@RequestBody ReposeRequestDTO.ReposeTodayRequestDTO requestDTO,
-//                                       @PathVariable Long reposeId) {
-//        reposeService.updateTodayRepose(reposeId, requestDTO);
-//        return BaseResponse.success("Today's repose updated successfully");
-//    }
-//
+    // 5. 오늘 하루의 결과 기록
+    @Operation(summary = "오늘의 휴식 결과 기록", description = """
+            오늘의 휴식 결과 기록 API입니다. 휴식 ID와 오늘의 정의, 오늘의 감정을 입력받아 오늘의 휴식 결과를 기록합니다.\n
+            해당 API는 하루가 끝난 후에 호출하시면 됩니다.\n
+            현재 빠른 연동을 위해 휴식이 완료되지 않아도 오늘의 결과를 기록할 수 있습니다. 오늘의 결과를 기록하게 되면 해당 휴식은 완료된 것으로 간주됩니다.\n
+            이후 휴식 결과를 조회할 때 완료된 휴식만 조회됩니다. 따라서 해당 휴식은 조회되지 않습니다.
+            """)
+    @PostMapping("/today-repose/{reposeId}")
+    public BaseResponse<?> todayRepose(@RequestBody ReposeRequestDTO.ReposeTodayRequestDTO requestDTO,
+                                       @PathVariable Long reposeId) {
+        return new BaseResponse(reposeService.updateTodayRepose(reposeId, requestDTO));
+    }
+
 //    // 6. 캘린더 조회
 //    @GetMapping("/calendar")
 //    public BaseResponse<?> calendar() {
