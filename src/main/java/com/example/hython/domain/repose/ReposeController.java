@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "휴식")
 @RestController
+@CrossOrigin
 @RequestMapping("/sum")
 @RequiredArgsConstructor
 public class ReposeController {
