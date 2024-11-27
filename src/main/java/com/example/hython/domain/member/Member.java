@@ -52,6 +52,8 @@ public class Member {
 
     private LocalDate birth;
 
+    private String firebaseToken;
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Recipe> recipes = new ArrayList<>();
 
@@ -71,5 +73,9 @@ public class Member {
         this.name = requestDto.getName();
         this.phoneNumber = requestDto.getPhoneNumber();
         this.profileImageUrl = requestDto.getProfileImageUrl();
+    }
+
+    public void updateFCMToken(String fcmToken) {
+        this.firebaseToken = fcmToken;
     }
 }

@@ -86,4 +86,22 @@ public class MemberService {
                 .build();
     }
 
+    public String findFirebaseTokenByMemberId(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.NOT_FOUND_MEMBER)).getFirebaseToken();
+    }
+
+    @Transactional
+    public Long updateFCMToken(MemberRequestDTO.UpdateFCMTokenRequestDTO requestDto) {
+        String token = jwtUtils.getToken();
+        Long memberId = jwtUtils.getMemberIdByToken(token);
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.NOT_FOUND_MEMBER));
+
+        member.updateFCMToken(requestDto.getFcmToken());
+
+        return member.getId();
+    }
+
 }
