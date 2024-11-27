@@ -29,6 +29,7 @@ public enum BaseResponseStatus {
     ADD_RECIPE_FAIL(false, HttpStatus.BAD_REQUEST.value(), "최대 3개의 레시피만 추가할 수 있습니다."),
     DUPLICATED_RECIPE(false, HttpStatus.BAD_REQUEST.value(), "이미 추가된 레시피입니다."),
     NOT_EXIST_RECIPE(false, HttpStatus.BAD_REQUEST.value(), "존재하지 않는 레시피입니다."),
+    NOT_FOUND_RECIPE(false, HttpStatus.BAD_REQUEST.value(), "레시피가 존재하지 않습니다."),
 
 
 

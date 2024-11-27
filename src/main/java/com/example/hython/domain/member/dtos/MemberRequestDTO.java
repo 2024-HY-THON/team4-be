@@ -32,6 +32,15 @@ public class MemberRequestDTO {
     @Getter
     @RequiredArgsConstructor
     public static class RecipeRequestDTO {
+        private Integer minutes;
+        private Integer satisfaction;
+        private String definition;
+        private String recipe;
+    }
+
+    @Getter
+    @RequiredArgsConstructor
+    public static class RecipeDeleteRequestDTO {
         private String recipe;
     }
 }
