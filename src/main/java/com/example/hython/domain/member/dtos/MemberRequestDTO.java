@@ -1,5 +1,6 @@
 package com.example.hython.domain.member.dtos;
 
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +28,8 @@ public class MemberRequestDTO {
         private String password;
         private String name;
         private String phoneNumber;
+        private String profileImageUrl;
+        private LocalDate birth;
     }
 
     @Getter

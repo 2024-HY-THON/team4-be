@@ -51,18 +51,13 @@ public class RecipeService {
     }
 
     @Transactional
-    public boolean deleteRecipe(MemberRequestDTO.RecipeDeleteRequestDTO requestDto) {
-        String token = jwtUtils.getToken();
-        Long memberId = jwtUtils.getMemberIdByToken(token);
+    public boolean deleteRecipe(Long recipeId) {
 
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new BaseException(BaseResponseStatus.NOT_FOUND_MEMBER));
-
-        if (!recipeRepository.existsByRecipe(requestDto.getRecipe())) {
+        if (!recipeRepository.existsById(recipeId)) {
             throw new BaseException(BaseResponseStatus.NOT_FOUND_RECIPE);
         }
 
-        recipeRepository.deleteByRecipe(requestDto.getRecipe());
+        recipeRepository.deleteById(recipeId);
 
         return true;
     }
@@ -92,18 +87,18 @@ public class RecipeService {
     }
 
     @Transactional
-    public Long updateRecipe(MemberRequestDTO.RecipeRequestDTO requestDto) {
+    public Long updateRecipe(MemberRequestDTO.RecipeRequestDTO requestDto, Long recipeId) {
         String token = jwtUtils.getToken();
         Long memberId = jwtUtils.getMemberIdByToken(token);
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.NOT_FOUND_MEMBER));
 
-        if (!recipeRepository.existsByRecipe(requestDto.getRecipe())) {
+        if (!recipeRepository.existsById(recipeId)) {
             throw new BaseException(BaseResponseStatus.NOT_FOUND_RECIPE);
         }
 
-        Recipe recipe  = recipeRepository.findByRecipe(requestDto.getRecipe()).orElseThrow(
+        Recipe recipe  = recipeRepository.findById(recipeId).orElseThrow(
                 () -> new BaseException(BaseResponseStatus.NOT_FOUND_RECIPE));
 
         recipe.updateInfo(requestDto.getMinutes(), requestDto.getSatisfaction(), requestDto.getDefinition(), requestDto.getRecipe());

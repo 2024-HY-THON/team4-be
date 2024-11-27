@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +20,7 @@ public class RecipeController {
     private final RecipeService recipeService;
 
     @Tag(name = "회원 - 레시피")
-    @Operation(summary = "내 레시피 조회", description = "내 레시피 조회 API입니다. 내 레시피를 조회합니다.")
+    @Operation(summary = "프로필 페이지 - 내 레시피 조회", description = "내 레시피 조회 API입니다. 내 레시피를 조회합니다.")
     @GetMapping("/get-my-recipe")
     public BaseResponse<?> getMyRecipe () {
         return new BaseResponse<>(recipeService.getMyRecipe());
@@ -37,17 +38,18 @@ public class RecipeController {
     // 레시피 삭제하기
     @Tag(name = "회원 - 레시피")
     @Operation(summary = "레시피 삭제", description = "레시피 삭제 API입니다. 레시피를 입력받아 레시피를 삭제합니다.")
-    @PostMapping("/delete-recipe")
-    public BaseResponse<?> deleteRecipe (@RequestBody MemberRequestDTO.RecipeDeleteRequestDTO requestDto) {
-        return new BaseResponse<>(recipeService.deleteRecipe(requestDto));
+    @PostMapping("/delete-recipe/{recipeId}")
+    public BaseResponse<?> deleteRecipe (@PathVariable Long recipeId) {
+        return new BaseResponse<>(recipeService.deleteRecipe(recipeId));
     }
 
     // 레시피 수정하기
     @Tag(name = "회원 - 레시피")
     @Operation(summary = "레시피 수정", description = "레시피 수정 API입니다. 레시피를 입력받아 레시피를 수정합니다.")
-    @PostMapping("/update-recipe")
-    public BaseResponse<?> updateRecipe (@RequestBody MemberRequestDTO.RecipeRequestDTO requestDto) {
-        return new BaseResponse<>(recipeService.updateRecipe(requestDto));
+    @PostMapping("/update-recipe/{recipeId}")
+    public BaseResponse<?> updateRecipe (@RequestBody MemberRequestDTO.RecipeRequestDTO requestDto,
+                                         @PathVariable Long recipeId) {
+        return new BaseResponse<>(recipeService.updateRecipe(requestDto, recipeId));
     }
 
 }
