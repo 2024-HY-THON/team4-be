@@ -2,6 +2,7 @@ package com.example.hython.domain.repose.dtos;
 
 import jakarta.persistence.criteria.CriteriaBuilder.In;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +18,7 @@ public class ReposeResponseDTO {
     public static class ReposeDTO {
         private Long reposeId;
         private String todo;
+        private LocalTime startTime;
         private Integer remainingMinutes;
         private Integer remainingSeconds;
     }
@@ -67,6 +69,7 @@ public class ReposeResponseDTO {
     @AllArgsConstructor
     public static class ReposeContentDTO {
         private Long reposeId;
+        private boolean isDone;
         private Integer reposeTotalMinutes;
         private String todayEmotion;
         private String todayDefinition;

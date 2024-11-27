@@ -42,6 +42,7 @@ public class ReposeService {
                 .reposeDTOs(reposes.stream()
                         .map(repose -> ReposeDTO.builder()
                                 .reposeId(repose.getId())
+                                .startTime(repose.getStartTime())
                                 .todo(repose.getRecipe().getRecipe())
                                 .remainingMinutes(repose.getRemainingSeconds() / 60)
                                 .remainingSeconds(repose.getRemainingSeconds() % 60)
@@ -61,16 +62,17 @@ public class ReposeService {
                 () -> new BaseException(BaseResponseStatus.NOT_FOUND_RECIPE)
         );
 
-        // 중복 검사 추가
-        if (reposeRepository.existsByMemberAndRecipe(member, recipe)) {
-            throw new BaseException(BaseResponseStatus.DUPLICATE_REPOSE);
-        }
+//        // 중복 검사 추가
+//        if (reposeRepository.existsByMemberAndRecipe(member, recipe)) {
+//            throw new BaseException(BaseResponseStatus.DUPLICATE_REPOSE);
+//        }
 
         Repose repose = Repose.builder()
                 .recipe(recipe)
                 .minutes(reposeRequest.getMinutes())
                 .remainingSeconds(reposeRequest.getMinutes() * 60)
                 .startDate(LocalDate.now())
+                .startTime(LocalTime.of(reposeRequest.getStartHour(), reposeRequest.getStartMinute()))
                 .stopTime(LocalTime.MIN)
                 .isDone(false)
                 .isPaused(true)
@@ -187,6 +189,7 @@ public class ReposeService {
 
         return ReposeResponseDTO.ReposeContentDTO.builder()
                 .reposeId(repose.getId())
+                .isDone(repose.getIsDone())
                 .todayEmotion(repose.getTodayEmotion())
                 .todayDefinition(repose.getTodayDefinition())
                 .recipeSatisfaction(repose.getRecipe().getSatisfaction())

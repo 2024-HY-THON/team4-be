@@ -18,7 +18,7 @@ public class ReposeController {
     // 1. 내 Repose 조회
     @Operation(summary = "내 휴식 조회", description = """
             내 휴식 조회 API입니다. 내 휴식을 조회합니다.\n
-            현재 진행 중인 휴식만 조회됩니다. 휴식이 완료된 경우는 조회되지 않습니다. 
+            현재 완료 되지 않은 휴식만 조회됩니다. 휴식이 완료된 경우는 조회되지 않습니다. 
             """)
     @GetMapping("/get-my-rest")
     public BaseResponse<?> getMyRepose() {

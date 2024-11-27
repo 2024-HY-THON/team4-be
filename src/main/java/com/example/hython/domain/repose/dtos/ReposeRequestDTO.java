@@ -13,6 +13,8 @@ public class ReposeRequestDTO {
     public static class ReposeAddRequestDTO {
         private Long recipeId;
         private Integer minutes;
+        private Integer startHour;
+        private Integer startMinute;
     }
 
     @Getter

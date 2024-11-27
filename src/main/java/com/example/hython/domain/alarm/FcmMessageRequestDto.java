@@ -1,4 +1,4 @@
-package com.example.hython.common.alarm;
+package com.example.hython.domain.alarm;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

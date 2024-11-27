@@ -29,7 +29,10 @@ public class RecipeController {
 
     // 새로운 레시피 추가하기
     @Tag(name = "회원 - 레시피")
-    @Operation(summary = "레시피 추가", description = "레시피 추가 API입니다. 레시피를 입력받아 레시피를 추가합니다.")
+    @Operation(summary = "레시피 추가", description = """
+    레시피 추가 API입니다. 레시피를 입력받아 레시피를 추가합니다.\n
+    recipe에는 레시피의 타이틀을 입력 하고, definition에는 레시피의 설명을 입력합니다.\n
+    """)
     @PostMapping("/add-recipe")
     public BaseResponse<?> addRecipe (@RequestBody MemberRequestDTO.RecipeRequestDTO requestDto) {
         return new BaseResponse<>(recipeService.addRecipe(requestDto));
