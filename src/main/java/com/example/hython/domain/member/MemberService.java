@@ -5,6 +5,7 @@ import com.example.hython.common.exception.BaseException;
 import com.example.hython.common.response.BaseResponseStatus;
 import com.example.hython.domain.member.dtos.MemberRequestDTO;
 import com.example.hython.domain.member.dtos.MemberResponseDTO;
+import com.example.hython.domain.member.utils.JWTUtils;
 import com.fasterxml.jackson.databind.ser.Serializers.Base;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final JWTUtils jwtUtils;
 
     @Transactional
     public MemberResponseDTO.MemberSignUpResponseDTO signup(MemberRequestDTO.MemberSignUpRequestDTO requestDto) {
@@ -33,7 +35,7 @@ public class MemberService {
 
         return MemberResponseDTO.MemberSignUpResponseDTO.builder()
                 .email(member.getEmail())
-                .accessToken(member.getName())
+                .accessToken(jwtUtils.generateToken(member.getId()))
                 .build();
     }
 }

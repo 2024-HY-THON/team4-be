@@ -19,6 +19,11 @@ public enum BaseResponseStatus {
      */
     // 이미 가입된 이메일임
     DUPLICATED_EMAIL(false, HttpStatus.BAD_REQUEST.value(), "중복된 이메일입니다."),
+    EXPIRED_JWT(false, HttpStatus.BAD_REQUEST.value(), "만료된 토큰입니다."),
+    _INVALID_JWT(false, HttpStatus.BAD_REQUEST.value(), "유효하지 않은 토큰입니다."),
+    _UNSUPPORTED_JWT(false, HttpStatus.BAD_REQUEST.value(), "지원되지 않는 토큰입니다."),
+    _EMPTY_JWT(false, HttpStatus.BAD_REQUEST.value(), "토큰이 비어있습니다."),
+
 
 
     /**
