@@ -2,6 +2,7 @@ package com.example.hython.domain.repose;
 
 
 import com.example.hython.domain.member.Member;
+import com.example.hython.domain.recipe.Recipe;
 import com.example.hython.domain.repose.dtos.ReposeRequestDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -35,10 +37,6 @@ public class Repose {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 할 일
-    @Column(nullable = false)
-    private String todo;
-
     // 타이머 시작 시간
     private LocalDate startDate;
 
@@ -60,6 +58,9 @@ public class Repose {
     private String todayDefinition; // 추가된 필드
 
     private String todayEmotion; // 추가된 필드
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private Recipe recipe;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

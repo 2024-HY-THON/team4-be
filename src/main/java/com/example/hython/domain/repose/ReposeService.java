@@ -1,10 +1,14 @@
 package com.example.hython.domain.repose;
 
+import static java.util.stream.Collectors.groupingBy;
+
 import com.example.hython.common.exception.BaseException;
 import com.example.hython.common.response.BaseResponseStatus;
 import com.example.hython.domain.member.Member;
 import com.example.hython.domain.member.MemberRepository;
 import com.example.hython.domain.member.utils.JWTUtils;
+import com.example.hython.domain.recipe.Recipe;
+import com.example.hython.domain.recipe.RecipeRepository;
 import com.example.hython.domain.repose.dtos.ReposeRequestDTO;
 import com.example.hython.domain.repose.dtos.ReposeResponseDTO;
 import com.example.hython.domain.repose.dtos.ReposeResponseDTO.ReposeDTO;
@@ -22,6 +26,7 @@ public class ReposeService {
 
     private final ReposeRepository reposeRepository;
     private final MemberRepository memberRepository;
+    private final RecipeRepository recipeRepository;
     private final JWTUtils jwtUtils;
 
     public ReposeResponseDTO.MyReposesDTO getMyRepose() {
@@ -37,7 +42,7 @@ public class ReposeService {
                 .reposeDTOs(reposes.stream()
                         .map(repose -> ReposeDTO.builder()
                                 .reposeId(repose.getId())
-                                .todo(repose.getTodo())
+                                .todo(repose.getRecipe().getRecipe())
                                 .remainingMinutes(repose.getRemainingSeconds() / 60)
                                 .remainingSeconds(repose.getRemainingSeconds() % 60)
                                 .build())
@@ -52,9 +57,17 @@ public class ReposeService {
         Member member = memberRepository.findById(id).orElseThrow(
                 () -> new BaseException(BaseResponseStatus.NOT_FOUND_MEMBER)
         );
+        Recipe recipe = recipeRepository.findById(reposeRequest.getRecipeId()).orElseThrow(
+                () -> new BaseException(BaseResponseStatus.NOT_FOUND_RECIPE)
+        );
+
+        // 중복 검사 추가
+        if (reposeRepository.existsByMemberAndRecipe(member, recipe)) {
+            throw new BaseException(BaseResponseStatus.DUPLICATE_REPOSE);
+        }
 
         Repose repose = Repose.builder()
-                .todo(reposeRequest.getTodo())
+                .recipe(recipe)
                 .minutes(reposeRequest.getMinutes())
                 .remainingSeconds(reposeRequest.getMinutes() * 60)
                 .startDate(LocalDate.now())
@@ -67,7 +80,7 @@ public class ReposeService {
         Repose saved = reposeRepository.save(repose);
         return ReposeResponseDTO.ReposeDTO.builder()
                 .reposeId(saved.getId())
-                .todo(saved.getTodo())
+                .todo(recipe.getRecipe())
                 .remainingMinutes(repose.getRemainingSeconds() / 60)
                 .remainingSeconds(repose.getRemainingSeconds() % 60)
                 .build();
@@ -89,7 +102,7 @@ public class ReposeService {
         Repose saved = reposeRepository.save(repose);
         return ReposeResponseDTO.ReposeDTO.builder()
                 .reposeId(saved.getId())
-                .todo(saved.getTodo())
+                .todo(saved.getRecipe().getRecipe())
                 .remainingMinutes(repose.getRemainingSeconds() / 60)
                 .remainingSeconds(repose.getRemainingSeconds() % 60)
                 .build();
@@ -109,28 +122,12 @@ public class ReposeService {
             Repose saved = reposeRepository.save(repose);
             return ReposeResponseDTO.ReposeDTO.builder()
                     .reposeId(saved.getId())
-                    .todo(saved.getTodo())
+                    .todo(saved.getRecipe().getRecipe())
                     .remainingMinutes(repose.getRemainingSeconds() / 60)
                     .remainingSeconds(repose.getRemainingSeconds() % 60)
                     .build();
         }
         throw new BaseException(BaseResponseStatus.NOT_PAUSED_REPOSE);
-    }
-
-
-    public void todayRepose(ReposeRequestDTO.ReposeTodayRequestDTO reposeRequest, Long reposeId) {
-        Repose repose = reposeRepository.findById(reposeId).orElseThrow(
-                () -> new BaseException(BaseResponseStatus.NOT_FOUND_REPOSE)
-        );
-
-        // 완료 처리
-        // 오늘의 정의 및 감정 등록
-        // 종료 시간 설정
-        // 저장
-
-
-
-        reposeRepository.save(repose);
     }
 
     public ReposeResponseDTO.ReposeDetailDTO updateTodayRepose(Long reposeId, ReposeRequestDTO.ReposeTodayRequestDTO reposeRequest) {
@@ -148,11 +145,55 @@ public class ReposeService {
                 .build();
     }
 
-    public void calendar() {
+    public ReposeResponseDTO.ReposeCalendarDTO getCalendar(Integer year, Integer month) {
+        Long id = jwtUtils.getMemberIdByToken(jwtUtils.getToken());
+        Member member = memberRepository.findById(id).orElseThrow(
+                () -> new BaseException(BaseResponseStatus.NOT_FOUND_MEMBER)
+        );
 
+        // 해당 연/월의 휴식 데이터를 조회
+        List<Repose> reposes = reposeRepository.findByMemberAndStartDateBetweenAndIsDone(member,
+                LocalDate.of(year, month, 1),
+                LocalDate.of(year, month, LocalDate.of(year, month, 1).lengthOfMonth()), true);
+
+        if (reposes.isEmpty()) {
+            throw new BaseException(BaseResponseStatus.NOT_EXIST_REPOSE);
+        }
+
+        // 같은 날이면 제일 먼저 한걸로
+        List<ReposeResponseDTO.ReposeCalendarDetailDTO> reposeCalendarDetailDTOs = reposes.stream()
+                .collect(groupingBy(Repose::getStartDate))
+                .entrySet().stream()
+                .map(entry -> entry.getValue().stream().findFirst().get())
+                .map(repose -> ReposeResponseDTO.ReposeCalendarDetailDTO.builder()
+                        .reposeId(repose.getId())
+                        .reposeTotalMinutes(repose.getMinutes())
+                        .todayEmotion(repose.getTodayEmotion())
+                        .date(repose.getStartDate())
+                        .build())
+                .toList();
+
+        return ReposeResponseDTO.ReposeCalendarDTO.builder()
+                .year(year)
+                .month(month)
+                .reposeCalendarDetailDTOs(reposeCalendarDetailDTOs)
+                .build();
     }
 
-    public void detail(Repose repose) {
+    public ReposeResponseDTO.ReposeContentDTO detail(Long reposeId) {
+        Repose repose = reposeRepository.findById(reposeId).orElseThrow(
+                () -> new BaseException(BaseResponseStatus.NOT_FOUND_REPOSE)
+        );
+
+        return ReposeResponseDTO.ReposeContentDTO.builder()
+                .reposeId(repose.getId())
+                .todayEmotion(repose.getTodayEmotion())
+                .todayDefinition(repose.getTodayDefinition())
+                .recipeSatisfaction(repose.getRecipe().getSatisfaction())
+                .recipeDefinition(repose.getRecipe().getDefinition())
+                .reposeTotalMinutes(repose.getMinutes())
+                .date(repose.getStartDate())
+                .build();
 
     }
 }

@@ -11,7 +11,7 @@ public class ReposeRequestDTO {
     @Getter
     @RequiredArgsConstructor
     public static class ReposeAddRequestDTO {
-        private String todo;
+        private Long recipeId;
         private Integer minutes;
     }
 

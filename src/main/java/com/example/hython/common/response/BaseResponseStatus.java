@@ -35,7 +35,8 @@ public enum BaseResponseStatus {
     ALREADY_PAUSED_REPOSE(false, HttpStatus.BAD_REQUEST.value(), "이미 일시정지된 기록입니다."),
     ALREADY_DONE_REPOSE(false, HttpStatus.BAD_REQUEST.value(), "이미 완료된 기록입니다."),
     NOT_PAUSED_REPOSE(false, HttpStatus.BAD_REQUEST.value(), "일시정지되지 않은 기록입니다."),
-
+    NOT_EXIST_REPOSE(false, HttpStatus.BAD_REQUEST.value(), "해당 연월에 휴식 기록이 없습니다."),
+    DUPLICATE_REPOSE(false, HttpStatus.BAD_REQUEST.value(), "이미 추가된 휴식입니다."),
     /**
      * 500 :  Database, Server 오류
      */

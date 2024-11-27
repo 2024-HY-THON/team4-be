@@ -55,8 +55,8 @@ public class ReposeController {
     }
 
     // 5. 오늘 하루의 결과 기록
-    @Operation(summary = "오늘의 휴식 결과 기록", description = """
-            오늘의 휴식 결과 기록 API입니다. 휴식 ID와 오늘의 정의, 오늘의 감정을 입력받아 오늘의 휴식 결과를 기록합니다.\n
+    @Operation(summary = "휴식 완료 및 오늘의 휴식 결과 기록", description = """
+            휴식 완료 및 오늘의 휴식 결과 기록 API입니다. 휴식 ID와 오늘의 정의, 오늘의 감정을 입력받아 오늘의 휴식 결과를 기록합니다.\n
             해당 API는 하루가 끝난 후에 호출하시면 됩니다.\n
             현재 빠른 연동을 위해 휴식이 완료되지 않아도 오늘의 결과를 기록할 수 있습니다. 오늘의 결과를 기록하게 되면 해당 휴식은 완료된 것으로 간주됩니다.\n
             이후 휴식 결과를 조회할 때 완료된 휴식만 조회됩니다. 따라서 해당 휴식은 조회되지 않습니다.
@@ -67,17 +67,24 @@ public class ReposeController {
         return new BaseResponse(reposeService.updateTodayRepose(reposeId, requestDTO));
     }
 
-//    // 6. 캘린더 조회
-//    @GetMapping("/calendar")
-//    public BaseResponse<?> calendar() {
-//        var calendarData = reposeService.getCalendar();
-//        return BaseResponse.success(calendarData);
-//    }
-//
-//    // 7. 세부 기록 조회
-//    @PostMapping("/detail")
-//    public BaseResponse<?> detail(@RequestBody ReposeRequestDTO.ReposeDetailRequestDTO requestDTO) {
-//        var detailData = reposeService.getDetail(requestDTO);
-//        return BaseResponse.success(detailData);
-//    }
+    // 6. 캘린더 조회
+    @Operation(summary = "캘린더 조회", description = """
+            캘린더 조회 API입니다. 년도와 월을 입력받아 해당 년도와 월의 완료된 휴식 기록을 조회합니다.\n
+            해당 월에 휴식을 한 날짜와 휴식 시간, 감정을 조회합니다. \n
+            휴식이 없는 날은 조회되지 않습니다. 또한 휴식을 여러 번 한 경우에는 제일 먼저 한 휴식만 조회됩니다.
+            """)
+    @GetMapping("/calendar")
+    public BaseResponse<?> calendar(@RequestParam Integer year, @RequestParam Integer month) {
+        return new BaseResponse(reposeService.getCalendar(year, month));
+    }
+
+    // 7. 세부 기록 조회
+    @Operation(summary = "세부 기록 조회", description = """
+            세부 기록 조회 API입니다. 휴식 ID를 입력받아 해당 휴식의 세부 기록을 조회합니다.\n
+            휴식의 총 시간, 감정, 정의, 레시피 만족도를 조회합니다.
+            """)
+    @PostMapping("/detail/rest/{restId}")
+    public BaseResponse<?> detail(@PathVariable Long restId) {
+        return new BaseResponse(reposeService.detail(restId));
+    }
 }
