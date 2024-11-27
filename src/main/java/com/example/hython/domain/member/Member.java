@@ -2,6 +2,7 @@ package com.example.hython.domain.member;
 
 import com.example.hython.common.exception.BaseException;
 import com.example.hython.common.response.BaseResponseStatus;
+import com.example.hython.domain.member.dtos.MemberRequestDTO.MemberUpdateRequestDTO;
 import com.example.hython.domain.recipe.Recipe;
 import com.example.hython.domain.repose.Repose;
 import jakarta.persistence.CascadeType;
@@ -12,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -48,6 +50,8 @@ public class Member {
 
     private String phoneNumber;
 
+    private LocalDate birth;
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Recipe> recipes = new ArrayList<>();
 
@@ -61,9 +65,11 @@ public class Member {
         recipes.add(recipe);
     }
 
-    public void updateInfo(String password, String name, String phoneNumber) {
-        this.password = password;
-        this.name = name;
-        this.phoneNumber = phoneNumber;
+    public void updateInfo(MemberUpdateRequestDTO requestDto) {
+        this.birth = requestDto.getBirth();
+        this.password = requestDto.getPassword();
+        this.name = requestDto.getName();
+        this.phoneNumber = requestDto.getPhoneNumber();
+        this.profileImageUrl = requestDto.getProfileImageUrl();
     }
 }

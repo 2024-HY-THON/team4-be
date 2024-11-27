@@ -20,7 +20,7 @@ public class RecipeController {
     private final RecipeService recipeService;
 
     @Tag(name = "회원 - 레시피")
-    @Operation(summary = "내 레시피 조회", description = "내 레시피 조회 API입니다. 내 레시피를 조회합니다.")
+    @Operation(summary = "프로필 페이지 - 내 레시피 조회", description = "내 레시피 조회 API입니다. 내 레시피를 조회합니다.")
     @GetMapping("/get-my-recipe")
     public BaseResponse<?> getMyRecipe () {
         return new BaseResponse<>(recipeService.getMyRecipe());

@@ -25,6 +25,7 @@ public class ReposeRequestDTO {
     @RequiredArgsConstructor
     public static class ReposeTodayRequestDTO{
         private String todayDefinition;
+        private Boolean satisfaction;
         private String todayEmotion;
     }
 

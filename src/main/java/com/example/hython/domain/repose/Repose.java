@@ -59,6 +59,8 @@ public class Repose {
 
     private String todayEmotion; // 추가된 필드
 
+    private Boolean satisfaction; // 추가된 필드
+
     @OneToOne(fetch = FetchType.LAZY)
     private Recipe recipe;
 
@@ -77,6 +79,7 @@ public class Repose {
     }
 
     public void updateTodayRepose(ReposeRequestDTO.ReposeTodayRequestDTO requestDTO) {
+        this.satisfaction = requestDTO.getSatisfaction();
         this.isDone = true;
         this.remainingSeconds = 0;
         this.todayDefinition = requestDTO.getTodayDefinition();

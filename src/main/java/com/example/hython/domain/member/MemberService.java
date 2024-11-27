@@ -64,7 +64,7 @@ public class MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.NOT_FOUND_MEMBER));
 
-        member.updateInfo(requestDto.getPassword(), requestDto.getName(), requestDto.getPhoneNumber());
+        member.updateInfo(requestDto);
 
         return MemberResponseDTO.MemberSignUpResponseDTO.builder()
                 .email(member.getEmail())
