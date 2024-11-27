@@ -46,4 +46,11 @@ public class MemberRequestDTO {
     public static class RecipeDeleteRequestDTO {
         private String recipe;
     }
+
+
+    @Getter
+    @RequiredArgsConstructor
+    public static class UpdateFCMTokenRequestDTO{
+        private String fcmToken;
+    }
 }

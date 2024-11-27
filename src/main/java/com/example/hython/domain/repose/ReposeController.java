@@ -3,9 +3,11 @@ package com.example.hython.domain.repose;
 import com.example.hython.common.response.BaseResponse;
 import com.example.hython.domain.repose.dtos.ReposeRequestDTO;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "휴식")
 @RestController
 @RequestMapping("/sum")
 @RequiredArgsConstructor

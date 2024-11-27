@@ -26,6 +26,7 @@ jobs:
         run: |
           mkdir -p src/main/resources
           echo "${{ secrets.PROPERTIES }}" > src/main/resources/application.yml
+          echo "${{ secrets.FCM }}" > src/main/resources/hython.json
 
       - name: Build with Gradle
         run: |
