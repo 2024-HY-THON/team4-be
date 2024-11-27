@@ -1,9 +1,7 @@
-package com.example.hython.common;
+package com.example.hython.common.exception;
 
 import com.example.hython.common.response.BaseResponse;
 import com.example.hython.common.response.BaseResponseStatus;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;

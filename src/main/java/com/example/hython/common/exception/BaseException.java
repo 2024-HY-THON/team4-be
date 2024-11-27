@@ -1,4 +1,4 @@
-package com.example.hython.common;
+package com.example.hython.common.exception;
 
 import com.example.hython.common.response.BaseResponseStatus;
 import lombok.Getter;
