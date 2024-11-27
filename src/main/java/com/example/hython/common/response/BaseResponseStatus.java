@@ -30,8 +30,11 @@ public enum BaseResponseStatus {
     DUPLICATED_RECIPE(false, HttpStatus.BAD_REQUEST.value(), "이미 추가된 레시피입니다."),
     NOT_EXIST_RECIPE(false, HttpStatus.BAD_REQUEST.value(), "존재하지 않는 레시피입니다."),
     NOT_FOUND_RECIPE(false, HttpStatus.BAD_REQUEST.value(), "레시피가 존재하지 않습니다."),
-
-
+    NOT_FOUND_REPOSE(false, HttpStatus.BAD_REQUEST.value(), "존재하지 않는 기록입니다."),
+    INVALID_STOP_TIME(false, HttpStatus.BAD_REQUEST.value(), "유효하지 않은 종료 시간입니다."),
+    ALREADY_PAUSED_REPOSE(false, HttpStatus.BAD_REQUEST.value(), "이미 일시정지된 기록입니다."),
+    ALREADY_DONE_REPOSE(false, HttpStatus.BAD_REQUEST.value(), "이미 완료된 기록입니다."),
+    NOT_PAUSED_REPOSE(false, HttpStatus.BAD_REQUEST.value(), "일시정지되지 않은 기록입니다."),
 
     /**
      * 500 :  Database, Server 오류

@@ -3,6 +3,7 @@ package com.example.hython.domain.member;
 import com.example.hython.common.exception.BaseException;
 import com.example.hython.common.response.BaseResponseStatus;
 import com.example.hython.domain.recipe.Recipe;
+import com.example.hython.domain.repose.Repose;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -49,6 +50,9 @@ public class Member {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Recipe> recipes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Repose> repose = new ArrayList<>();
 
     public void addRecipe(Recipe recipe) {
         if (recipes.size() >= 3) {
