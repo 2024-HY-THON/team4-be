@@ -39,4 +39,11 @@ public class Recipe {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public void updateInfo(Integer minutes, Integer satisfaction, String definition, String recipe) {
+        this.minutes = minutes;
+        this.satisfaction = satisfaction;
+        this.definition = definition;
+        this.recipe = recipe;
+    }
 }

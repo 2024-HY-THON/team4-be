@@ -41,4 +41,13 @@ public class RecipeController {
     public BaseResponse<?> deleteRecipe (@RequestBody MemberRequestDTO.RecipeDeleteRequestDTO requestDto) {
         return new BaseResponse<>(recipeService.deleteRecipe(requestDto));
     }
+
+    // 레시피 수정하기
+    @Tag(name = "회원 - 레시피")
+    @Operation(summary = "레시피 수정", description = "레시피 수정 API입니다. 레시피를 입력받아 레시피를 수정합니다.")
+    @PostMapping("/update-recipe")
+    public BaseResponse<?> updateRecipe (@RequestBody MemberRequestDTO.RecipeRequestDTO requestDto) {
+        return new BaseResponse<>(recipeService.updateRecipe(requestDto));
+    }
+
 }

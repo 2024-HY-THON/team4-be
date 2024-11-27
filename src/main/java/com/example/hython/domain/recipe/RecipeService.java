@@ -8,6 +8,7 @@ import com.example.hython.domain.member.dtos.MemberRequestDTO;
 import com.example.hython.domain.member.utils.JWTUtils;
 import com.example.hython.domain.recipe.dtos.RecipeResponseDTO;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -88,5 +89,24 @@ public class RecipeService {
                         .toList())
                 .totalRecipeCount(recipes.size())
                 .build();
+    }
+
+    @Transactional
+    public Long updateRecipe(MemberRequestDTO.RecipeRequestDTO requestDto) {
+        String token = jwtUtils.getToken();
+        Long memberId = jwtUtils.getMemberIdByToken(token);
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.NOT_FOUND_MEMBER));
+
+        if (!recipeRepository.existsByRecipe(requestDto.getRecipe())) {
+            throw new BaseException(BaseResponseStatus.NOT_FOUND_RECIPE);
+        }
+
+        Recipe recipe  = recipeRepository.findByRecipe(requestDto.getRecipe()).orElseThrow(
+                () -> new BaseException(BaseResponseStatus.NOT_FOUND_RECIPE));
+
+        recipe.updateInfo(requestDto.getMinutes(), requestDto.getSatisfaction(), requestDto.getDefinition(), requestDto.getRecipe());
+        return recipeRepository.save(recipe).getId();
     }
 }
