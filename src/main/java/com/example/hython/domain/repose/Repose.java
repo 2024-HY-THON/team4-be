@@ -4,6 +4,7 @@ package com.example.hython.domain.repose;
 import com.example.hython.domain.member.Member;
 import com.example.hython.domain.recipe.Recipe;
 import com.example.hython.domain.repose.dtos.ReposeRequestDTO;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -40,6 +41,8 @@ public class Repose {
     // 타이머 시작 시간
     private LocalDate startDate;
 
+    private LocalTime startTime;
+
     // 총 할당된 시간 (분 단위)
     private Integer minutes;
 
@@ -61,10 +64,11 @@ public class Repose {
 
     private Boolean satisfaction; // 추가된 필드
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "member_id")
     private Member member;
 

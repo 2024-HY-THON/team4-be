@@ -54,7 +54,7 @@ public class MemberController {
     }
 
     @Tag(name = "회원")
-    @Operation(summary = "FCM 토큰 업데이트", description = "FCM 토큰을 업데이트합니다.")
+    @Operation(summary = "FCM 알람 - FCM 토큰 업데이트", description = "FCM 토큰을 업데이트합니다.")
     @PostMapping("/update-fcm-token/member/{memberId}")
     public BaseResponse<?> updateFCMToken(@RequestBody MemberRequestDTO.UpdateFCMTokenRequestDTO requestDto) {
         return new BaseResponse<>(memberService.updateFCMToken(requestDto));

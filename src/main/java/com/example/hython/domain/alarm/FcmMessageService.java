@@ -1,4 +1,4 @@
-package com.example.hython.common.alarm;
+package com.example.hython.domain.alarm;
 
 import com.example.hython.domain.member.MemberService;
 import com.google.firebase.messaging.FirebaseMessaging;
