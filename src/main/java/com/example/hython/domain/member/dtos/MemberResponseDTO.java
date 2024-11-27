@@ -15,4 +15,14 @@ public class MemberResponseDTO {
         private String email;
         private String accessToken;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+
+    public static class ProfileResponseDTO {
+        private String name;
+        private String profileImageUrl;
+    }
 }
