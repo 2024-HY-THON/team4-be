@@ -11,6 +11,7 @@ import com.example.hython.domain.repose.dtos.ReposeResponseDTO.ReposeDTO;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,28 @@ public class ReposeService {
     private final ReposeRepository reposeRepository;
     private final MemberRepository memberRepository;
     private final JWTUtils jwtUtils;
+
+    public ReposeResponseDTO.MyReposesDTO getMyRepose() {
+        Long id = jwtUtils.getMemberIdByToken(jwtUtils.getToken());
+        Member member = memberRepository.findById(id).orElseThrow(
+                () -> new BaseException(BaseResponseStatus.NOT_FOUND_MEMBER)
+        );
+
+        List<Repose> reposes = reposeRepository.findByMemberAndIsDone(member, false);
+
+        return ReposeResponseDTO.MyReposesDTO.builder()
+                .reposeCount(reposes.size())
+                .reposeDTOs(reposes.stream()
+                        .map(repose -> ReposeDTO.builder()
+                                .reposeId(repose.getId())
+                                .todo(repose.getTodo())
+                                .remainingMinutes(repose.getRemainingSeconds() / 60)
+                                .remainingSeconds(repose.getRemainingSeconds() % 60)
+                                .build())
+                        .toList())
+                .build();
+    }
+
 
     @Transactional
     public ReposeResponseDTO.ReposeDTO addRepose(ReposeRequestDTO.ReposeAddRequestDTO reposeRequest) {
@@ -44,6 +67,7 @@ public class ReposeService {
         Repose saved = reposeRepository.save(repose);
         return ReposeResponseDTO.ReposeDTO.builder()
                 .reposeId(saved.getId())
+                .todo(saved.getTodo())
                 .remainingMinutes(repose.getRemainingSeconds() / 60)
                 .remainingSeconds(repose.getRemainingSeconds() % 60)
                 .build();
@@ -65,6 +89,7 @@ public class ReposeService {
         Repose saved = reposeRepository.save(repose);
         return ReposeResponseDTO.ReposeDTO.builder()
                 .reposeId(saved.getId())
+                .todo(saved.getTodo())
                 .remainingMinutes(repose.getRemainingSeconds() / 60)
                 .remainingSeconds(repose.getRemainingSeconds() % 60)
                 .build();
@@ -84,6 +109,7 @@ public class ReposeService {
             Repose saved = reposeRepository.save(repose);
             return ReposeResponseDTO.ReposeDTO.builder()
                     .reposeId(saved.getId())
+                    .todo(saved.getTodo())
                     .remainingMinutes(repose.getRemainingSeconds() / 60)
                     .remainingSeconds(repose.getRemainingSeconds() % 60)
                     .build();

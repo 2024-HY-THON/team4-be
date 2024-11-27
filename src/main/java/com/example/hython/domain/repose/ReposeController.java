@@ -13,12 +13,11 @@ public class ReposeController {
 
     private final ReposeService reposeService; // ReposeService 주입
 
-//    // 1. 내 Repose 조회
-//    @GetMapping("/get-my-repose")
-//    public BaseResponse<?> getMyRepose() {
-//        var response = reposeService.getMyRepose();
-//        return new BaseResponse(response);
-//    }
+    // 1. 내 Repose 조회
+    @GetMapping("/get-my-repose")
+    public BaseResponse<?> getMyRepose() {
+        return new BaseResponse(reposeService.getMyRepose());
+    }
 
     // 2. Repose 추가
     @Operation(summary = "휴식 추가", description = """
