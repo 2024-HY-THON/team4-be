@@ -192,7 +192,7 @@ public class ReposeService {
                 .isDone(repose.getIsDone())
                 .todayEmotion(repose.getTodayEmotion())
                 .todayDefinition(repose.getTodayDefinition())
-                .recipeSatisfaction(repose.getRecipe().getSatisfaction())
+                .recipeSatisfaction(repose.getSatisfaction())
                 .recipeDefinition(repose.getRecipe().getDefinition())
                 .reposeTotalMinutes(repose.getMinutes())
                 .date(repose.getStartDate())
