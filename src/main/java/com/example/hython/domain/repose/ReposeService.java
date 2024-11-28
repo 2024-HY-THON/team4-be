@@ -187,12 +187,16 @@ public class ReposeService {
                 () -> new BaseException(BaseResponseStatus.NOT_FOUND_REPOSE)
         );
 
+        if (!repose.getIsDone()){
+            throw new BaseException(BaseResponseStatus.NOT_DONE_REPOSE);
+        }
+
         return ReposeResponseDTO.ReposeContentDTO.builder()
                 .reposeId(repose.getId())
                 .isDone(repose.getIsDone())
                 .todayEmotion(repose.getTodayEmotion())
                 .todayDefinition(repose.getTodayDefinition())
-                .recipeSatisfaction(!repose.getRecipe().getSatisfaction().equals(0))
+                .recipeSatisfaction(repose.getSatisfaction())
                 .recipeDefinition(repose.getRecipe().getDefinition())
                 .reposeTotalMinutes(repose.getMinutes())
                 .date(repose.getStartDate())
