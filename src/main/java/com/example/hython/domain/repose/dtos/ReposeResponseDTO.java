@@ -74,7 +74,7 @@ public class ReposeResponseDTO {
         private String todayEmotion;
         private String todayDefinition;
 
-        private Integer recipeSatisfaction;
+        private Boolean recipeSatisfaction;
         private String recipeDefinition;
 
         private LocalDate date;
