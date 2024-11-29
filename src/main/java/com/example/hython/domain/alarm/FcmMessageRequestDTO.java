@@ -8,10 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FcmMessageRequestDto {
-
-    @Schema(description = "회원 ID")
-    private Long memberId;
+public class FcmMessageRequestDTO {
 
     @Schema(description = "메시지 제목")
     private String title;
