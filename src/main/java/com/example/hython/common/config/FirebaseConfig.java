@@ -16,7 +16,7 @@ public class FirebaseConfig {
     public void initialize() {
         try {
             FileInputStream serviceAccount =
-                    new FileInputStream("./src/main/resources/hython.json");
+                    new FileInputStream(getClass().getClassLoader().getResource("hython.json").getFile());
 
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
