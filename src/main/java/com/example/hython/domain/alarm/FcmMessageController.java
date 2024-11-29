@@ -23,7 +23,7 @@ public class FcmMessageController {
     FCM 메시지를 전송합니다. 추후 구현 예정입니다. 
     """)
     @PostMapping("/sendMessage")
-    public ResponseEntity<String> sendMessage(@RequestBody FcmMessageRequestDto requestDto) {
+    public ResponseEntity<String> sendMessage(@RequestBody FcmMessageRequestDTO requestDto) {
         String response = fcmMessageService.sendMessage(requestDto);
         return ResponseEntity.ok(response);
     }
