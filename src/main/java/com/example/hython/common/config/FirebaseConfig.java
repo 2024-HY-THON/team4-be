@@ -6,13 +6,14 @@ import com.google.firebase.FirebaseOptions;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-@Service
+@Configuration
 public class FirebaseConfig {
 
     @PostConstruct
