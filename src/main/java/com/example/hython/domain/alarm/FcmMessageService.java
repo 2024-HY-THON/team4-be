@@ -48,25 +48,30 @@ public class FcmMessageService {
         }
     }
     @Transactional
-    @Scheduled(cron = "0 * * * * *") // 매 분마다 실행
+    @Scheduled(fixedRate = 20000)// 매 분마다 실행
     public void sendReposeAlarm() {
         // 현재 시간
         LocalTime now = LocalTime.now();
         log.info(now.toString());
         // 현재 시간에서 5분 뒤
-        LocalTime fiveMinutesBefore = now.plusMinutes(5);
+        LocalTime fiveMinutesBefore = now.plusMinutes(15);
 
         // 5분 전에 시작하는 휴식 조회
         List<Repose> reposeList = reposeRepository.findByStartTimeBetween(now, fiveMinutesBefore);
 
+        log.info("reposeList is " + reposeList.toString());
         for (Repose repose : reposeList) {
+            if (repose.getIsAlarm()) {
+                continue;
+            }
             // 사용자의 Firebase 토큰 값을 조회
             String userFirebaseToken = memberService.findFirebaseTokenByMemberId(repose.getMember().getId());
 
+            repose.setIsAlarm(true);
             // 메시지 구성
             Message message = Message.builder()
                     .putData("title", "일상 속 짧은 해방의 순간, 숨")
-                    .putData("content", repose.getMinutes() + " 동안 " + repose.getRecipe().getRecipe() + "으로 휴식을 갖는건 어떠신가요?")
+                    .putData("content", repose.getMinutes() + "분 동안 " + repose.getRecipe().getRecipe() + "(으)로 휴식을 갖는건 어떠신가요?")
                     .setToken(userFirebaseToken) // 조회한 토큰 값을 사용
                     .build();
 

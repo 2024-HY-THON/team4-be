@@ -75,6 +75,7 @@ public class ReposeService {
                 .startTime(LocalTime.of(reposeRequest.getStartHour(), reposeRequest.getStartMinute()))
                 .stopTime(LocalTime.MIN)
                 .isDone(false)
+                .isAlarm(false)
                 .isPaused(true)
                 .member(member)
                 .build();

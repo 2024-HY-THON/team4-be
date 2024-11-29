@@ -55,6 +55,8 @@ public class Repose {
     // 완료 여부
     private Boolean isDone;
 
+    private Boolean isAlarm;
+
     // 타이머가 일시 정지 상태인지 여부
     private Boolean isPaused; // 추가된 필드
 
@@ -88,6 +90,10 @@ public class Repose {
         this.remainingSeconds = 0;
         this.todayDefinition = requestDTO.getTodayDefinition();
         this.todayEmotion = requestDTO.getTodayEmotion();
+    }
+
+    public void setIsAlarm(Boolean isAlarm) {
+        this.isAlarm = isAlarm;
     }
 }
 
