@@ -15,4 +15,8 @@ public class FcmMessageRequestDTO {
 
     @Schema(description = "메시지 내용")
     private String body;
+
+    private String restId;
+
+    private String text;
 }

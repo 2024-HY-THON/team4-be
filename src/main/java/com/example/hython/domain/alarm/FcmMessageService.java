@@ -36,6 +36,8 @@ public class FcmMessageService {
         Message message = Message.builder()
                 .putData("title", requestDto.getTitle())
                 .putData("content", requestDto.getBody())
+                .putData("restId", requestDto.getRestId())
+                .putData("text", requestDto.getText())
                 .setToken(userFirebaseToken) // 조회한 토큰 값을 사용
                 .build();
         try {
@@ -72,6 +74,8 @@ public class FcmMessageService {
             Message message = Message.builder()
                     .putData("title", "일상 속 짧은 해방의 순간, 숨")
                     .putData("content", repose.getMinutes() + "분 동안 " + repose.getRecipe().getRecipe() + "(으)로 휴식을 갖는건 어떠신가요?")
+                    .putData("restId", repose.getId().toString())
+                    .putData("text", repose.getRecipe().getRecipe())
                     .setToken(userFirebaseToken) // 조회한 토큰 값을 사용
                     .build();
 
